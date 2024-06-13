@@ -1,6 +1,6 @@
 import React from 'react';
 import Navibar from './navibar';
-
+import { Link } from 'react-router-dom';
 const styles = {
   containerFluid: {
     margin: '0 auto',
@@ -105,10 +105,10 @@ const styles = {
 
 // Dummy data array
 const dummyData = [
-  { NIK: '1234567890123456', Nama: 'Budi Santoso', Alamat: 'Jl. Merdeka No. 1', TTL: '01-01-1980', Tindakan: 'Edit' },
-  { NIK: '2345678901234567', Nama: 'Ani Yulianti', Alamat: 'Jl. Kartini No. 2', TTL: '12-12-1990', Tindakan: 'Edit' },
-  { NIK: '3456789012345678', Nama: 'Siti Nurhaliza', Alamat: 'Jl. Sudirman No. 3', TTL: '21-03-1985', Tindakan: 'Edit' },
-  { NIK: '4567890123456789', Nama: 'Tono Kurniawan', Alamat: 'Jl. Diponegoro No. 4', TTL: '15-07-1975', Tindakan: 'Edit' },
+  { NIK: '1234567890123456', Nama: 'Budi Santoso', jenis_bansos: 'Jl. Merdeka No. 1', status: 'aktif' },
+  { NIK: '2345678901234567', Nama: 'Ani Yulianti', jenis_bansos: 'Jl. Kartini No. 2', status: 'aktif' },
+  { NIK: '3456789012345678', Nama: 'Siti Nurhaliza', jenis_bansos: 'Jl. Sudirman No. 3', status: 'aktif' },
+  { NIK: '4567890123456789', Nama: 'Tono Kurniawan', jenis_bansos: 'Jl. Diponegoro No. 4', status: 'aktif' },
 ];
 
 function Penduduk() {
@@ -121,9 +121,9 @@ function Penduduk() {
 
         <div style={styles.card}>
           <div style={styles.cardHeader}>
-            <a href="#" style={styles.btnPrimary}>
-              <i className="fas fa-plus">+</i>
-            </a>
+          <Link to="/tambah_status" style={styles.btnPrimary}>
+              <i className="fas fa-plus"> Tambah</i>
+            </Link>
           </div>
           <div style={styles.cardBody}>
             <div style={styles.tableResponsive}>
@@ -142,15 +142,15 @@ function Penduduk() {
                     <tr style={styles.tr} key={index}>
                       <td>{item.NIK}</td>
                       <td>{item.Nama}</td>
-                      <td>{item.Alamat}</td>
-                      <td>{item.TTL}</td>
+                      <td>{item.jenis_bansos}</td>
+                      <td>{item.status}</td>
                       <td>
-                            <a href="#" style={styles.btnWarning}>
-                                <i className="fas fa-plus">edit</i>
-                            </a>
-                            <a href="#" style={styles.btnDanger}>
-                                <i className="fas fa-plus">hapus</i>
-                            </a>
+                      <Link to={`/edit_status/${index}`} style={styles.btnWarning}>
+                          <i className="fas fa-edit"> Edit</i>
+                        </Link>
+                        <Link to={`/hapus_status/${index}`} style={styles.btnDanger}>
+                          <i className="fas fa-trash"> Hapus</i>
+                        </Link>
                       </td>
                     </tr>
                   ))}

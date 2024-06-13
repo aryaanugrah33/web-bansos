@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom'; // Import Link dari react-router-dom
 import NaviBar from './navibar';
+
 const styles = {
   containerFluid: {
     margin: '0 auto',
@@ -39,6 +41,7 @@ const styles = {
     backgroundColor: '#4e73df',
     borderColor: '#4e73df',
     textDecoration: 'none',
+    marginRight: '0.5rem',
   },
   btnWarning: {
     display: 'inline-block',
@@ -54,8 +57,9 @@ const styles = {
     borderRadius: '0.35rem',
     color: '#fff',
     backgroundColor: 'orange',
-    borderColor: '#4e73df',
+    borderColor: '#e3e6f0',
     textDecoration: 'none',
+    marginRight: '0.5rem',
   },
   btnDanger: {
     display: 'inline-block',
@@ -71,7 +75,7 @@ const styles = {
     borderRadius: '0.35rem',
     color: '#fff',
     backgroundColor: 'red',
-    borderColor: '#4e73df',
+    borderColor: '#e3e6f0',
     textDecoration: 'none',
   },
   cardBody: {
@@ -102,15 +106,16 @@ const styles = {
   },
 };
 
-// Dummy data array
 const dummyData = [
-  { NIK: '1234567890123456', Nama: 'Budi Santoso', Alamat: 'Jl. Merdeka No. 1', TTL: '01-01-1980', Tindakan: 'Edit' },
-  { NIK: '2345678901234567', Nama: 'Ani Yulianti', Alamat: 'Jl. Kartini No. 2', TTL: '12-12-1990', Tindakan: 'Edit' },
-  { NIK: '3456789012345678', Nama: 'Siti Nurhaliza', Alamat: 'Jl. Sudirman No. 3', TTL: '21-03-1985', Tindakan: 'Edit' },
-  { NIK: '4567890123456789', Nama: 'Tono Kurniawan', Alamat: 'Jl. Diponegoro No. 4', TTL: '15-07-1975', Tindakan: 'Edit' },
+  { NIK: '1234567890123456', Nama: 'Budi Santoso', Alamat: 'Jl. Merdeka No. 1', TTL: '01-01-1980' },
+  { NIK: '2345678901234567', Nama: 'Ani Yulianti', Alamat: 'Jl. Kartini No. 2', TTL: '12-12-1990' },
+  { NIK: '3456789012345678', Nama: 'Siti Nurhaliza', Alamat: 'Jl. Sudirman No. 3', TTL: '21-03-1985' },
+  { NIK: '4567890123456789', Nama: 'Tono Kurniawan', Alamat: 'Jl. Diponegoro No. 4', TTL: '15-07-1975' },
 ];
 
-function Penduduk() {
+const Penduduk = () => {
+  const [data, setData] = useState(dummyData);
+
   return (
     <>
       <NaviBar />
@@ -120,9 +125,9 @@ function Penduduk() {
 
         <div style={styles.card}>
           <div style={styles.cardHeader}>
-            <a href="#" style={styles.btnPrimary}>
-              <i className="fas fa-plus">+</i>
-            </a>
+            <Link to="/tambah_penduduk" style={styles.btnPrimary}>
+              <i className="fas fa-plus"> Tambah</i>
+            </Link>
           </div>
           <div style={styles.cardBody}>
             <div style={styles.tableResponsive}>
@@ -137,19 +142,19 @@ function Penduduk() {
                   </tr>
                 </thead>
                 <tbody style={styles.tbody}>
-                  {dummyData.map((item, index) => (
+                  {data.map((item, index) => (
                     <tr style={styles.tr} key={index}>
                       <td>{item.NIK}</td>
                       <td>{item.Nama}</td>
                       <td>{item.Alamat}</td>
                       <td>{item.TTL}</td>
                       <td>
-                            <a href="#" style={styles.btnWarning}>
-                                <i className="fas fa-plus">edit</i>
-                            </a>
-                            <a href="#" style={styles.btnDanger}>
-                                <i className="fas fa-plus">hapus</i>
-                            </a>
+                        <Link to={`/edit_penduduk/${index}`} style={styles.btnWarning}>
+                          <i className="fas fa-edit"> Edit</i>
+                        </Link>
+                        <Link to={`/hapus_penduduk/${index}`} style={styles.btnDanger}>
+                          <i className="fas fa-trash"> Hapus</i>
+                        </Link>
                       </td>
                     </tr>
                   ))}
@@ -161,6 +166,6 @@ function Penduduk() {
       </div>
     </>
   );
-}
+};
 
 export default Penduduk;

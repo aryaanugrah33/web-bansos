@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import {useNavigate} from 'react-router-dom'
 const styles = {
   container: {
     display: 'flex',
@@ -52,58 +52,42 @@ const styles = {
   },
 };
 
-function Login() {
-  const [email, setEmail] = useState('');
+const Login = () => {
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isHover, setIsHover] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Lakukan aksi login di sini
-    console.log('Email:', email);
-    console.log('Password:', password);
+  const handleLogin = (event) => {
+    event.preventDefault();
+    // Simpan username dan password di localStorage atau state yang sesuai
+    localStorage.setItem('username', username);
+    localStorage.setItem('password', password);
+    // Redirect ke halaman yang dilindungi
+    navigate('/protected');
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <h1 style={styles.heading}>Login</h1>
-        <form onSubmit={handleSubmit}>
-          <div style={styles.formGroup}>
-            <label style={styles.label} htmlFor="email">Email:</label>
-            <input
-              style={styles.input}
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div style={styles.formGroup}>
-            <label style={styles.label} htmlFor="password">Password:</label>
-            <input
-              style={styles.input}
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <button
-            type="submit"
-            style={{
-              ...styles.button,
-              ...(isHover ? styles.buttonHover : {})
-            }}
-            onMouseEnter={() => setIsHover(true)}
-            onMouseLeave={() => setIsHover(false)}
-          >
-            Login
-          </button>
-        </form>
-      </div>
+    <div>
+      <h2>Login</h2>
+      <form onSubmit={handleLogin}>
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button type="submit">Login</button>
+      </form>
+      {error && <p>{error}</p>}
     </div>
   );
-}
+};
 
 export default Login;
