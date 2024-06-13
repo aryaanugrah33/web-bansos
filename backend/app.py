@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 import pymysql
 import db
-from decorators import login_required
+from decorator import login_required
 
 app = Flask(__name__)
 
