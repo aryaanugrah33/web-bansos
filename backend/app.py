@@ -123,5 +123,67 @@ def delete_jenis_bansos(id):
     connection.close()
     return jsonify({'message': 'Jenis Bansos deleted successfully!'})
 
+# tampilan untuk data pengguna dan bansosnya
+
+@app.route('/pengguna', methods=['GET'])
+@login_required
+def get_all_pengguna():
+    connection = db.connect_db()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    cursor.execute("SELECT penduduk.nama, penduduk.no_ktp, jenis_bansos.nama_bansos, tanggal_terima FROM penerima_bansos join penduduk on penduduk.id=penerima_bansos.penduduk_id join jenis_bansos on jenis_bansos.id=penerima_bansos.bansos_id")
+    result = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return jsonify(result)
+
+@app.route('/pengguna/<int:id>', methods=['GET'])
+@login_required
+def get_pengguna(id):
+    connection = db.connect_db()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    cursor.execute("SELECT penduduk.nama, penduduk.no_ktp, jenis_bansos.nama_bansos, tanggal_terima FROM penerima_bansos join penduduk on penduduk.id=penerima_bansos.penduduk_id join jenis_bansos on jenis_bansos.id=penerima_bansos.bansos_id WHERE penerima_bansos.id=%s", (id,))
+    result = cursor.fetchone()
+    cursor.close()
+    connection.close()
+    return jsonify(result)
+
+@app.route('/pengguna', methods=['POST'])
+@login_required
+def add_pengguna():
+    data = request.get_json()
+    connection = db.connect_db()
+    cursor = connection.cursor()
+    cursor.execute("INSERT INTO penerima_bansos (penduduk_id, bansos_id) VALUES (%s, %s)",
+                   (data['penduduk_id'], data['bansos_id']))
+    connection.commit()
+    cursor.close()
+    connection.close()
+    return jsonify({'message': 'Jenis Bansos added successfully!'})
+
+@app.route('/pengguna/<int:id>', methods=['PUT'])
+@login_required
+def update_pengguna(id):
+    data = request.get_json()
+    connection = db.connect_db()
+    cursor = connection.cursor()
+    cursor.execute("UPDATE penerima_bansos SET penduduk_id=%s, bansos_id=%s, tanggal_terima=%s WHERE id=%s",
+               (data['penduduk_id'], data['bansos_id'], data['tanggal_terima'], id))
+
+    connection.commit()
+    cursor.close()
+    connection.close()
+    return jsonify({'message': 'Jenis Bansos updated successfully!'})
+
+@app.route('/pengguna/<int:id>', methods=['DELETE'])
+@login_required
+def delete_pengguna(id):
+    connection = db.connect_db()
+    cursor = connection.cursor()
+    cursor.execute("DELETE FROM penerima_bansos WHERE id=%s", (id,))
+    connection.commit()
+    cursor.close()
+    connection.close()
+    return jsonify({'message': 'Jenis Bansos deleted successfully!'})
+
 if __name__ == '__main__':
     app.run(debug=True)
