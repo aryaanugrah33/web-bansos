@@ -185,5 +185,20 @@ def delete_pengguna(id):
     connection.close()
     return jsonify({'message': 'Jenis Bansos deleted successfully!'})
 
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    connection = db.connect_db()
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM user WHERE username = %s AND password = %s", (data['username'], data['password']))
+    user = cursor.fetchone()
+    cursor.close()
+    connection.close()
+
+    if user:
+        return jsonify({"message": "Login successful", "user": user}), 200
+    else:
+        return jsonify({"message": "Invalid credentials"}), 401
+    
 if __name__ == '__main__':
     app.run(debug=True)
