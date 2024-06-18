@@ -1,47 +1,43 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [notification, setNotification] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async (event) => {
+  const handleRegister = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/login', {
+      const response = await axios.post('http://localhost:5000/register', {
         username,
         password,
       });
 
-      if (response.status === 200) {
-        setNotification('Login successful!');
-        console.log('Login successful:', response.data.message);
-        
-        // Simpan token JWT di localStorage
-        localStorage.setItem('jwt_token', response.data.token);
-
-        // Redirect ke halaman yang sesuai setelah login sukses
-        navigate('/Home');
+      if (response.status === 201) { // Assuming registration endpoint returns status 201 on success
+        setNotification('Registration successful!');
+        console.log('Registration successful:', response.data.message);
+        // Redirect ke halaman login setelah registrasi sukses
+        navigate('/login');
       } else {
-        setError('Login failed. Please check your credentials.');
+        setError('Registration failed. Please try again.');
       }
     } catch (error) {
-      console.error('Login error:', error);
-      setError('Login failed. Please check your credentials.');
+      console.error('Registration error:', error);
+      setError('Registration failed. Please try again.');
     }
   };
 
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        <h2 style={styles.heading}>Login</h2>
+        <h2 style={styles.heading}>Register</h2>
         {notification && <p style={styles.notification}>{notification}</p>}
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleRegister}>
           <div style={styles.formGroup}>
             <label style={styles.label}>Username:</label>
             <input
@@ -61,14 +57,10 @@ const Login = () => {
             />
           </div>
           <button type="submit" style={styles.button}>
-            Login
+            Register
           </button>
         </form>
         {error && <p style={styles.error}>{error}</p>}
-        <div style={styles.registerLink}>
-          <span>Don't have an account?</span>
-          <Link to="/register" style={styles.registerButton}>Register</Link>
-        </div>
       </div>
     </div>
   );
@@ -121,15 +113,6 @@ const styles = {
     color: '#fff',
     cursor: 'pointer',
   },
-  registerLink: {
-    marginTop: '1rem',
-    textAlign: 'center',
-  },
-  registerButton: {
-    marginLeft: '0.5rem',
-    color: '#4e73df',
-    textDecoration: 'none',
-  },
   notification: {
     marginBottom: '1rem',
     padding: '0.75rem',
@@ -148,4 +131,4 @@ const styles = {
   },
 };
 
-export default Login;
+export default Register;

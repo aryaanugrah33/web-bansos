@@ -2,6 +2,10 @@
 /backend/venv
 /node_modules
 /.pnp
+/backend/Lib
+/backend/Scripts
+/backend/Include
+/backend/__pycache__
 .pnp.js
 
 # testing
