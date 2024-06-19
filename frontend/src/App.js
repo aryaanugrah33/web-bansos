@@ -1,31 +1,24 @@
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Home from './components/home.jsx'; // Path impor yang benar
-import Login from './components/login.jsx'; // Path impor yang benar
-import './App.css';
-import Penduduk from './components/penduduk.jsx';
-import Bansos from './components/bansos.jsx';
-import TambahPenduduk from './components/tambahPenduduk.jsx';
-import EditPenduduk from './components/editPenduduk.jsx';
-import Tambahbansos from './components/tambahBansos.jsx';
-import EditBansos from './components/editBansos.jsx';
-import TambahStatus from './components/tambahstatus.jsx';
-import EditStatus from './components/editStatus.jsx';
+// App.js
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './components/Home';
+import Login from './components/Login';
+import Register from './components/Register';
+import Penduduk from './components/Penduduk';
+import JenisBansos from './components/JenisBansos';
+
+
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/penduduk' element={<Penduduk />} />
-        <Route path='/jenis_bansos' element={<Bansos />} />
-        <Route path="/tambah_penduduk" element={<TambahPenduduk />} />
-        <Route path="/edit_penduduk/:id" element={<EditPenduduk />} />
-        <Route path="/tambah_bansos" element={<Tambahbansos />} />
-        <Route path="/edit_bansos/:id" element={<EditBansos />} />
-        <Route path="/tambah_status" element={<TambahStatus />} />
-        <Route path="/edit_status/:id" element={<EditStatus />} />
-        
+        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/jenis_bansos" element={<JenisBansos />} />
+        <Route path="/penduduk" element={<Penduduk />} />
       </Routes>
     </Router>
   );
