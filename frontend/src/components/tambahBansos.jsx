@@ -1,3 +1,4 @@
+// TambahBansos.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -8,18 +9,22 @@ const TambahBansos = () => {
   const [deskripsi, setDeskripsi] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
+      const username = localStorage.getItem('username');
+      const password = localStorage.getItem('password');
       await axios.post('http://localhost:5000/jenis_bansos', {
         nama_bansos: namaBansos,
         deskripsi: deskripsi,
+      }, {
+        headers: {
+          Authorization: `Basic ${btoa(`${username}:${password}`)}`,
+        },
       });
       navigate('/jenis_bansos');
     } catch (error) {
       console.error('Tambah bansos error:', error);
-      // Handle error tambah bansos
     }
   };
 
@@ -28,28 +33,26 @@ const TambahBansos = () => {
       <Navbar />
       <div style={styles.content}>
         <h2 style={styles.heading}>Tambah Jenis Bansos</h2>
-        <form onSubmit={handleSubmit}>
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Nama Bansos:</label>
+        <form onSubmit={handleSubmit} style={styles.form}>
+          <div>
+            <label>Nama Bansos:</label>
             <input
               type="text"
               value={namaBansos}
               onChange={(e) => setNamaBansos(e.target.value)}
-              style={styles.input}
               required
             />
           </div>
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Deskripsi:</label>
+          <div>
+            <label>Deskripsi:</label>
             <textarea
               value={deskripsi}
               onChange={(e) => setDeskripsi(e.target.value)}
-              style={styles.textarea}
               required
             />
           </div>
-          <button type="submit" style={styles.button}>
-            Simpan
+          <button type="submit" style={styles.addButton}>
+            Tambah Bansos
           </button>
         </form>
       </div>
@@ -72,39 +75,18 @@ const styles = {
     marginBottom: '1rem',
     color: '#5a5c69',
   },
-  formGroup: {
-    marginBottom: '1rem',
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    maxWidth: '400px',
   },
-  label: {
-    display: 'block',
-    marginBottom: '0.5rem',
-    color: '#5a5c69',
-  },
-  input: {
-    width: '100%',
-    padding: '0.75rem',
-    border: '1px solid #d1d3e2',
-    borderRadius: '0.35rem',
-    fontSize: '1rem',
-  },
-  textarea: {
-    width: '100%',
-    padding: '0.75rem',
-    border: '1px solid #d1d3e2',
-    borderRadius: '0.35rem',
-    fontSize: '1rem',
-    minHeight: '100px',
-  },
-  button: {
-    width: '100%',
-    padding: '0.75rem',
-    border: 'none',
-    borderRadius: '0.35rem',
-    fontSize: '1rem',
+  addButton: {
     backgroundColor: '#4e73df',
     color: '#fff',
-    cursor: 'pointer',
+    padding: '0.5rem',
+    borderRadius: '0.25rem',
     marginTop: '1rem',
+    cursor: 'pointer',
   },
 };
 

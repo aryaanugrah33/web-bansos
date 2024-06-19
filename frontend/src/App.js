@@ -7,6 +7,8 @@ import Register from './components/Register';
 import Penduduk from './components/Penduduk';
 import JenisBansos from './components/JenisBansos';
 
+
+
 function App() {
   return (
     <Router>
@@ -15,8 +17,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/penduduk" element={<Penduduk />} />
         <Route path="/jenis_bansos" element={<JenisBansos />} />
+        <Route path="/penduduk" element={<Penduduk />} />
       </Routes>
     </Router>
   );

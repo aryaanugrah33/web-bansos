@@ -1,3 +1,4 @@
+// Login.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
@@ -21,10 +22,9 @@ const Login = () => {
       if (response.status === 200) {
         setNotification('Login successful!');
         console.log('Login successful:', response.data.message);
-        
-        // Simpan token JWT di localStorage
-        localStorage.setItem('jwt_token', response.data.token);
-
+        // Simpan informasi login di localStorage
+        localStorage.setItem('username', username);
+        localStorage.setItem('password', password);
         // Redirect ke halaman yang sesuai setelah login sukses
         navigate('/Home');
       } else {
@@ -40,7 +40,6 @@ const Login = () => {
     <div style={styles.container}>
       <div style={styles.card}>
         <h2 style={styles.heading}>Login</h2>
-        {notification && <p style={styles.notification}>{notification}</p>}
         <form onSubmit={handleLogin}>
           <div style={styles.formGroup}>
             <label style={styles.label}>Username:</label>
@@ -64,7 +63,8 @@ const Login = () => {
             Login
           </button>
         </form>
-        {error && <p style={styles.error}>{error}</p>}
+        {notification && <p>{notification}</p>}
+        {error && <p>{error}</p>}
         <div style={styles.registerLink}>
           <span>Don't have an account?</span>
           <Link to="/register" style={styles.registerButton}>Register</Link>
@@ -129,22 +129,6 @@ const styles = {
     marginLeft: '0.5rem',
     color: '#4e73df',
     textDecoration: 'none',
-  },
-  notification: {
-    marginBottom: '1rem',
-    padding: '0.75rem',
-    borderRadius: '0.35rem',
-    backgroundColor: '#d4edda',
-    color: '#155724',
-    border: '1px solid #c3e6cb',
-  },
-  error: {
-    marginBottom: '1rem',
-    padding: '0.75rem',
-    borderRadius: '0.35rem',
-    backgroundColor: '#f8d7da',
-    color: '#721c24',
-    border: '1px solid #f5c6cb',
   },
 };
 

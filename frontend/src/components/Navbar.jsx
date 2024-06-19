@@ -1,13 +1,16 @@
 // Navbar.jsx
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
   const handleLogout = () => {
     // Hapus informasi login dari localStorage
-    localStorage.removeItem('auth');
+    localStorage.removeItem('username');
+    localStorage.removeItem('password');
     // Redirect ke halaman login
-    window.location.href = '/login'; // Redirect secara langsung karena tidak menggunakan <Navigate />
+    navigate('/login');
   };
 
   return (

@@ -1,3 +1,4 @@
+// Register.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -18,7 +19,7 @@ const Register = () => {
         password,
       });
 
-      if (response.status === 201) { // Assuming registration endpoint returns status 201 on success
+      if (response.status === 200) {
         setNotification('Registration successful!');
         console.log('Registration successful:', response.data.message);
         // Redirect ke halaman login setelah registrasi sukses
@@ -36,7 +37,6 @@ const Register = () => {
     <div style={styles.container}>
       <div style={styles.card}>
         <h2 style={styles.heading}>Register</h2>
-        {notification && <p style={styles.notification}>{notification}</p>}
         <form onSubmit={handleRegister}>
           <div style={styles.formGroup}>
             <label style={styles.label}>Username:</label>
@@ -60,7 +60,8 @@ const Register = () => {
             Register
           </button>
         </form>
-        {error && <p style={styles.error}>{error}</p>}
+        {notification && <p>{notification}</p>}
+        {error && <p>{error}</p>}
       </div>
     </div>
   );
@@ -112,22 +113,6 @@ const styles = {
     backgroundColor: '#4e73df',
     color: '#fff',
     cursor: 'pointer',
-  },
-  notification: {
-    marginBottom: '1rem',
-    padding: '0.75rem',
-    borderRadius: '0.35rem',
-    backgroundColor: '#d4edda',
-    color: '#155724',
-    border: '1px solid #c3e6cb',
-  },
-  error: {
-    marginBottom: '1rem',
-    padding: '0.75rem',
-    borderRadius: '0.35rem',
-    backgroundColor: '#f8d7da',
-    color: '#721c24',
-    border: '1px solid #f5c6cb',
   },
 };
 
