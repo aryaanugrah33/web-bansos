@@ -1,57 +1,93 @@
-import React from 'react';
-import NaviBar from './navibar';
+// TambahBansos.jsx
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import Navbar from './Navbar';
 
-const styles = {
-  formContainer: {
-    maxWidth: '600px',
-    margin: '0 auto',
-    padding: '1rem',
-    boxShadow: '0 .15rem 1.75rem 0 rgba(58,59,69,.15)',
-  },
-  input: {
-    width: '100%',
-    padding: '0.75rem',
-    margin: '0.5rem 0',
-    boxSizing: 'border-box',
-  },
-  label: {
-    marginBottom: '0.5rem',
-    display: 'block',
-  },
-  button: {
-    padding: '0.75rem',
-    backgroundColor: '#4e73df',
-    color: '#fff',
-    border: 'none',
-    cursor: 'pointer',
-    marginTop: '1rem',
-    width: '100%',
-  }
-};
+const TambahBansos = () => {
+  const [namaBansos, setNamaBansos] = useState('');
+  const [deskripsi, setDeskripsi] = useState('');
+  const navigate = useNavigate();
 
-const Tambahbansos = () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const username = localStorage.getItem('username');
+      const password = localStorage.getItem('password');
+      await axios.post('http://localhost:5000/jenis_bansos', {
+        nama_bansos: namaBansos,
+        deskripsi: deskripsi,
+      }, {
+        headers: {
+          Authorization: `Basic ${btoa(`${username}:${password}`)}`,
+        },
+      });
+      navigate('/jenis_bansos');
+    } catch (error) {
+      console.error('Tambah bansos error:', error);
+    }
+  };
+
   return (
-    <>
-    <NaviBar />
-    <div style={styles.formContainer}>
-        
-      <h2>Tambah Penduduk</h2>
-      <form>
-        <label style={styles.label} htmlFor="nik">kode bansos:</label>
-        <input style={styles.input} type="text" id="kode_bansos" name="kode_bansos" />
-
-        <label style={styles.label} htmlFor="nama">Nama bansos:</label>
-        <input style={styles.input} type="text" id="Nama_bansos" name="Nama_bansos" />
-
-
-     
-
-        <button style={styles.button} type="submit">Tambah</button>
-      </form>
+    <div style={styles.container}>
+      <Navbar />
+      <div style={styles.content}>
+        <h2 style={styles.heading}>Tambah Jenis Bansos</h2>
+        <form onSubmit={handleSubmit} style={styles.form}>
+          <div>
+            <label>Nama Bansos:</label>
+            <input
+              type="text"
+              value={namaBansos}
+              onChange={(e) => setNamaBansos(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <label>Deskripsi:</label>
+            <textarea
+              value={deskripsi}
+              onChange={(e) => setDeskripsi(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit" style={styles.addButton}>
+            Tambah Bansos
+          </button>
+        </form>
+      </div>
     </div>
-    </>
-    
   );
 };
 
-export default Tambahbansos;
+const styles = {
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  content: {
+    marginLeft: '200px', // Lebar navbar
+    padding: '2rem',
+    flexGrow: 1,
+  },
+  heading: {
+    fontSize: '1.5rem',
+    marginBottom: '1rem',
+    color: '#5a5c69',
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    maxWidth: '400px',
+  },
+  addButton: {
+    backgroundColor: '#4e73df',
+    color: '#fff',
+    padding: '0.5rem',
+    borderRadius: '0.25rem',
+    marginTop: '1rem',
+    cursor: 'pointer',
+  },
+};
+
+export default TambahBansos;

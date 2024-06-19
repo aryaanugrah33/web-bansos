@@ -1,74 +1,129 @@
+// EditBansos.jsx
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import NaviBar from './navibar';
+import axios from 'axios';
+import { useNavigate, useParams } from 'react-router-dom';
+import Navbar from './Navbar';
+
+const EditBansos = () => {
+  const { id } = useParams();
+  const [namaBansos, setNamaBansos] = useState('');
+  const [deskripsi, setDeskripsi] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/jenis_bansos/${id}`);
+      const data = response.data;
+      setNamaBansos(data.nama_bansos);
+      setDeskripsi(data.deskripsi);
+    } catch (error) {
+      console.error('Fetch data error:', error);
+      // Handle error fetch data
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      await axios.put(`http://localhost:5000/jenis_bansos/${id}`, {
+        nama_bansos: namaBansos,
+        deskripsi: deskripsi,
+      });
+      navigate('/jenis_bansos');
+    } catch (error) {
+      console.error('Edit bansos error:', error);
+      // Handle error edit bansos
+    }
+  };
+
+  return (
+    <div style={styles.container}>
+      <Navbar />
+      <div style={styles.content}>
+        <h2 style={styles.heading}>Edit Jenis Bansos</h2>
+        <form onSubmit={handleSubmit}>
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Nama Bansos:</label>
+            <input
+              type="text"
+              value={namaBansos}
+              onChange={(e) => setNamaBansos(e.target.value)}
+              style={styles.input}
+              required
+            />
+          </div>
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Deskripsi:</label>
+            <textarea
+              value={deskripsi}
+              onChange={(e) => setDeskripsi(e.target.value)}
+              style={styles.textarea}
+              required
+            />
+          </div>
+          <button type="submit" style={styles.button}>
+            Simpan
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
 const styles = {
-  formContainer: {
-    maxWidth: '600px',
-    margin: '0 auto',
-    padding: '1rem',
-    boxShadow: '0 .15rem 1.75rem 0 rgba(58,59,69,.15)',
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  content: {
+    marginLeft: '200px', // Lebar navbar
+    padding: '2rem',
+    flexGrow: 1,
+  },
+  heading: {
+    fontSize: '1.5rem',
+    marginBottom: '1rem',
+    color: '#5a5c69',
+  },
+  formGroup: {
+    marginBottom: '1rem',
+  },
+  label: {
+    display: 'block',
+    marginBottom: '0.5rem',
+    color: '#5a5c69',
   },
   input: {
     width: '100%',
     padding: '0.75rem',
-    margin: '0.5rem 0',
-    boxSizing: 'border-box',
+    border: '1px solid #d1d3e2',
+    borderRadius: '0.35rem',
+    fontSize: '1rem',
   },
-  label: {
-    marginBottom: '0.5rem',
-    display: 'block',
+  textarea: {
+    width: '100%',
+    padding: '0.75rem',
+    border: '1px solid #d1d3e2',
+    borderRadius: '0.35rem',
+    fontSize: '1rem',
+    minHeight: '100px',
   },
   button: {
+    width: '100%',
     padding: '0.75rem',
+    border: 'none',
+    borderRadius: '0.35rem',
+    fontSize: '1rem',
     backgroundColor: '#4e73df',
     color: '#fff',
-    border: 'none',
     cursor: 'pointer',
     marginTop: '1rem',
-    width: '100%',
-  }
-};
-
-const EditBansos = () => {
-    const dummyData = [
-        { kode_bansos: '1234567890123456', nama_bansos: 'Budi Santoso' },
-      ];
-    const { id } = useParams(); // Ambil parameter ID dari URL
-    const [bansos, setBansos] = useState(null);
-  
-    useEffect(() => {
-      // Temukan data penduduk berdasarkan ID
-      const selectedBansos = dummyData[parseInt(id)];
-      if (selectedBansos) {
-        setBansos(selectedBansos);
-      }
-    }, [id]);
-  
-    if (!bansos) {
-      return <p>Loading...</p>; // Atau bisa juga mengarahkan kembali ke halaman sebelumnya
-    };
-  return (
-    <>
-        <NaviBar />
-        <div style={styles.formContainer}>
-        <h2>Edit Penduduk</h2>
-        <form>
-            <label style={styles.label} htmlFor="nik">kode bansos:</label>
-            <input style={styles.input} type="text" id="nik" name="nik" defaultValue={bansos.kode_bansos} />
-
-            <label style={styles.label} htmlFor="nama">Nama bansos:</label>
-            <input style={styles.input} type="text" id="Nama_bansos" Nama_bansos="nama" defaultValue={bansos.nama_bansos} />
-
-           
-
-           
-            <button style={styles.button} type="submit">Simpan Perubahan</button>
-        </form>
-        </div>
-        </>
-    );
-    
-    
+  },
 };
 
 export default EditBansos;
